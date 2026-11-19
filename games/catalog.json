@@ -1,0 +1,248 @@
+[
+  {
+    "id": "cm1",
+    "title": "Championship Manager",
+    "year": 1992,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship_Manager_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt"
+    ],
+    "dosbox": {
+      "cycles": "max 80%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "europe a"
+      ]
+    },
+    "lookupFile": "Game Files/codes.txt",
+    "note": "If the game asks for a league attendance figure, use the Results button. Type the season the game shows (for example 64/65) to see each division's attendance, then type the number without commas."
+  },
+  {
+    "id": "cmitalia",
+    "title": "Championship Manager Italia",
+    "year": 1993,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship_Manager_Italia_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt",
+      "Championship Manager Italia (1993).ba1",
+      "file_id.diz"
+    ],
+    "dosbox": {
+      "cycles": "max 80%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "cm"
+      ]
+    }
+  },
+  {
+    "id": "cm9394",
+    "title": "Championship Manager 93/94",
+    "year": 1993,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship_Manager_93_94_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt"
+    ],
+    "dosbox": {
+      "cycles": "max 80%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "cm.bat"
+      ]
+    }
+  },
+  {
+    "id": "cm2",
+    "title": "Championship Manager 2",
+    "year": 1995,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship Manager 2 (v1.56)",
+    "gameSubdir": ".",
+    "coverFolder": "Championship_Manager_2_DOS_Files_EN",
+    "exclude": [
+      "SDL.dll",
+      "SDL_net.dll",
+      "START GAME.exe",
+      "dosbox.conf"
+    ],
+    "note": "Version 1.56 with the original CD. The first time you play, the game is a large download (about 245 MB). After that your browser keeps a copy.",
+    "dosbox": {
+      "cycles": "max",
+      "memsize": 16,
+      "autoexec": [
+        "mount c .",
+        "imgmount d cm2.iso -t iso -fs iso",
+        "c:",
+        "cd cm2",
+        "dos32a cm2"
+      ]
+    },
+    "touchMouse": "relative"
+  },
+  {
+    "id": "cm2spa",
+    "title": "Championship Manager 2 (Spanish league)",
+    "year": 1995,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": false,
+    "folder": "Championship_Manager_2_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt",
+      "CM2_SPA",
+      "install.exe",
+      "dom.dom"
+    ],
+    "dosbox": {
+      "cycles": "max",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "mount a .",
+        "c:",
+        "cd cm2",
+        "cm2"
+      ]
+    },
+    "files": {
+      "cm2/config.dat": "a:\r\nC:\\CM2\\\r\nc:\r\n"
+    },
+    "note": "This copy is the Spanish-league edition of CM2. The menus are in English, but you manage clubs in La Liga.",
+    "touchMouse": "relative"
+  },
+  {
+    "id": "cm9697",
+    "title": "Championship Manager 96/97",
+    "year": 1996,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship_Manager_96_97_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt"
+    ],
+    "dosbox": {
+      "cycles": "max",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "cm2"
+      ]
+    },
+    "touchMouse": "relative"
+  },
+  {
+    "id": "cm9798",
+    "title": "Championship Manager 97/98",
+    "year": 1997,
+    "platform": "dos",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "Championship_Manager_97_98_DOS_Files_EN",
+    "exclude": [
+      "OldGamesDownload.url",
+      "readme.txt",
+      "AddMoney.exe",
+      "CMWiz.exe",
+      "Cm2ed32.exe",
+      "TrainMG.exe",
+      "UCME.exe",
+      "CM9798ED.EXE",
+      "CMAGENT.EXE",
+      "CMESGE98.EXE",
+      "CMFIND.EXE",
+      "CMTIMETRAVEL.EXE",
+      "CMX16.EXE",
+      "CMX8.EXE",
+      "MCCE.EXE",
+      "SCOUT16.EXE",
+      "SCOUT8.EXE"
+    ],
+    "dosbox": {
+      "cycles": "max",
+      "memsize": 32,
+      "autoexec": [
+        "set DOS4G=quiet",
+        "mount c .",
+        "c:",
+        "cm2e16"
+      ]
+    },
+    "note": "Saves for this version are large (around 60 MB before compression), so uploading them can take a little longer.",
+    "touchMouse": "relative"
+  },
+  {
+    "id": "cm3",
+    "title": "Championship Manager 3",
+    "year": 1999,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_3_Win_Preinstalled_EN"
+  },
+  {
+    "id": "cm9900",
+    "title": "Championship Manager 99/00",
+    "year": 1999,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_99_00_Win_ROM_EN"
+  },
+  {
+    "id": "cm0001",
+    "title": "Championship Manager 00/01",
+    "year": 2000,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_00_01_Win_ROM_EN"
+  },
+  {
+    "id": "cm0102",
+    "title": "Championship Manager 01/02",
+    "year": 2001,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_01_02_Win_ISO_EN"
+  },
+  {
+    "id": "cm4",
+    "title": "Championship Manager 4",
+    "year": 2003,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_4_Win_ROM_EN"
+  },
+  {
+    "id": "cm0304",
+    "title": "Championship Manager 03/04",
+    "year": 2003,
+    "platform": "windows",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "Championship_Manager_Season_03_04_Win_ISO_EN"
+  }
+]

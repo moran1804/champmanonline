@@ -1,0 +1,8 @@
+**/node_modules
+**/dist
+apps/web/public/jsdos
+data
+Game Files
+.git
+.env
+**/.DS_Store

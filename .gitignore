@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+.env
+data/
+apps/web/public/jsdos/
+# Original game files are large and copyrighted; they live on the NAS, not in git.
+Game Files/

@@ -1,0 +1,17 @@
+# Local test of the production image (needs Docker):
+#   docker compose -f deploy/compose.dev.yml up --build
+# then open http://localhost:8080 and sign in as admin / adminpass123.
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: adminpass123
+      COOKIE_SECURE: "false"
+    volumes:
+      - ../data:/data
+      - "../Game Files:/games:ro"
+    ports:
+      - "8080:8080"
