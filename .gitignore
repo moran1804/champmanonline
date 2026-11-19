@@ -6,3 +6,6 @@ data/
 apps/web/public/jsdos/
 # Original game files are large and copyrighted; they live on the NAS, not in git.
 Game Files/
+
+# Local, filled-in copies of deployment files (contain secrets)
+*.local.yaml

@@ -1,20 +1,26 @@
-# TrueNAS SCALE → Apps → Discover Apps → ⋮ → "Install via YAML"
-# Name the app "champmanonline" and paste this file. Replace every CHANGE_ME first.
+# ChampMan Online: TrueNAS SCALE Custom App
+# Apps → Discover Apps → ⋮ (top right) → Install via YAML. Name it "champmanonline" and paste this.
 #
-# Host paths (create these datasets/folders first):
-#   /mnt/CHANGE_ME_POOL/apps/champmanonline/data   app database + users' save files (back this up)
-#   /mnt/CHANGE_ME_POOL/apps/champmanonline/games  copy of the "Game Files" folder (one sub-folder per version)
-# Both must be owned by the TrueNAS "apps" user (uid/gid 568), at least read-only for games.
+# Before installing:
+#   1. Create the datasets (Datasets → Add Dataset, preset "Apps"):
+#        <pool>/apps/champmanonline/data    database + every player's saves (back this up)
+#        <pool>/apps/champmanonline/games   copy of the "Game Files" folder, one sub-folder per game
+#      Both owned by the "apps" user (uid/gid 568).
+#   2. Replace the CHANGE_ME values below.
+#
+# Ports: nothing is opened on your router; Cloudflare Tunnel makes an outbound connection.
+# 30080 on the NAS is for LAN access/health checks only (it was free when checked).
 
 services:
   app:
-    image: ghcr.io/CHANGE_ME_GITHUB_USER/champmanonline:latest
+    image: ghcr.io/moran1804/champmanonline:latest
+    pull_policy: always
     restart: unless-stopped
     user: "568:568"
     environment:
       # The admin account is created on first start. Sign in with this username and password.
       ADMIN_USERNAME: admin
-      ADMIN_PASSWORD: CHANGE_ME_long_random_password
+      ADMIN_PASSWORD: CHANGE_ME_admin_password
       # New players sign up with a username and password and can play immediately.
       # Set to "true" to make new accounts wait for an admin to approve them instead.
       REQUIRE_APPROVAL: "false"
@@ -24,17 +30,17 @@ services:
     volumes:
       - /mnt/CHANGE_ME_POOL/apps/champmanonline/data:/data
       - /mnt/CHANGE_ME_POOL/apps/champmanonline/games:/games:ro
-    # Optional: reach the app on your LAN at http://<nas-ip>:30080 for health checks.
-    # Logging in over plain HTTP needs COOKIE_SECURE: "false".
     ports:
       - "30080:8080"
 
   cloudflared:
     image: cloudflare/cloudflared:latest
+    pull_policy: always
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     environment:
-      # Cloudflare Zero Trust → Networks → Tunnels → your tunnel → install token.
-      TUNNEL_TOKEN: CHANGE_ME_TUNNEL_TOKEN
+      # Cloudflare Zero Trust → Networks → Tunnels → your tunnel → install token (the long eyJ... string).
+      # In the tunnel's Public Hostname: champmanonline.co.uk → Service: HTTP, URL: app:8080
+      TUNNEL_TOKEN: CHANGE_ME_tunnel_token
     depends_on:
       - app
