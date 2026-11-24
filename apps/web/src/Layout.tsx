@@ -8,9 +8,9 @@ export function Layout() {
     <div className="app">
       <header className="topbar">
         <Link to="/" className="brand">
-          <span className="brand-mark" aria-hidden>⚽</span>
+          <img className="brand-mark" src="/favicon.svg" alt="" aria-hidden width="26" height="26" />
           <span>
-            ChampMan <strong>Online</strong>
+            RetroPC<strong>Games</strong>
           </span>
         </Link>
         <nav>

@@ -1,6 +1,6 @@
-# ChampMan Online
+# RetroPCGames
 
-**champmanonline.co.uk** is a private website where approved users sign in and play the classic Championship Manager games in their browser. Their careers are saved to their account.
+**RetroPCGames** (currently at champman.chapmoran.co.uk) is a private website where users sign in and play classic PC games in their browser: the Championship Manager series plus DOS classics such as Doom, Monkey Island, Day of the Tentacle, Civilization, Lemmings and Prince of Persia. Their saves are stored with their account.
 
 - **DOS games** run entirely in the player's browser with [js-dos](https://js-dos.com) (DOSBox compiled to WebAssembly), so the server does no emulation.
 - **The server** (Fastify + SQLite) handles accounts and admin approval, sends out the game bundles, and stores each user's save files.
@@ -8,6 +8,19 @@
 - **Phones and tablets** are supported: tap to click, long-press to right-click, the phone's own keyboard via ⌨, and side controls when the phone is held sideways.
 
 Currently playable: **CM1, CM Italia, CM 93/94, CM2 (v1.56), CM 96/97 and CM 97/98** (DOS, in the browser) and **CM 99/00, CM 00/01 and CM 01/02** (Windows, streamed from a seat). **CM 03/04 and CM4** can't be offered: their discs use SafeDisc 4, which needs a Windows kernel driver that neither Wine nor current Windows has, and we don't use cracks. There's no original CM3 in the collection.
+
+## The library
+
+The homepage groups games by `category` from `games/catalog.json`: Championship Manager, Point & Click Adventures, Shoot 'em Ups, Strategy & Simulation, Platform & Action, Puzzle, Educational, and 18+ (hidden until the viewer confirms they're 18 or over). There's also a search box.
+
+The Championship Manager games live in their original version folders under the games root. Everything else lives in `RetroPCGames/<id>/` (a ready-to-run game folder with a `cover.*` image; catalog entries use `"gameSubdir": "."`). Games that can't be offered keep an entry with `"unavailable": "<reason>"`, which their tile shows instead of "Coming soon".
+
+How the collection was prepared (Nov 2026), in case more games are added the same way:
+- Internet Archive downloads often contain nested zips; id Software's "DEICE" packages are split self-extracting LHA archives (join the parts and unpack with 7-Zip).
+- Raw CD images are converted to ISO; games that need their CD mount it with `imgmount d <name>.iso -t iso -fs iso`, which also satisfies CD checks without cracks (e.g. Duke Nukem 3D's).
+- Games that need a setup program run once (e.g. Carmen Sandiego's `CONFIG.DAT`) were set up inside the emulator, and the files it wrote were captured through the save sync and added to the game folder.
+- Scene rips are only used if the game runs without their crack or loader (their intros are excluded); Red Alert's only copy is cracked, so it's listed as unavailable.
+- Catalog `dosbox` options: `cycles`, `memsize`, `cputype`, `core`, and `extra` (raw dosbox.conf lines). Some games need a fixed speed (Lemmings 3: `fixed 20000`) or a Pentium CPU (Duke 3D: `pentium_slow`, core `normal`).
 
 ## How it works
 
@@ -20,7 +33,7 @@ Browser ── Cloudflare ── cloudflared ── app container (:8080)
                                           └─ /data             app.db, saves/, cache/bundles/
 ```
 
-- **Game bundles.** For each game, the server zips the `<folder>/Game Files` directory together with a generated `dosbox.conf`, caches the result under `/data/cache/bundles`, and sends it only to approved users. The bundle URL includes a version hash, so browsers cache it permanently and still fetch a new copy when the files change.
+- **Game bundles.** For each game, the server zips (with Node's zlib: fflate 0.8.3's streaming deflate corrupted some files) the `<folder>/Game Files` directory together with a generated `dosbox.conf`, caches the result under `/data/cache/bundles`, and sends it only to approved users. The bundle URL includes a version hash, so browsers cache it permanently and still fetch a new copy when the files change.
 - **Saves.** A save slot is a zip of every file the game has changed compared with the original install (for CM 93/94 that's `SVGAME`, `PLHIST` and so on).
   - When a slot is loaded, the player lays this zip over the clean game files.
   - The player checks for changed files every 30 seconds, when **Save to cloud** is pressed, when **Exit game** is pressed, and when the tab is hidden. Any changes are merged into the slot and uploaded.

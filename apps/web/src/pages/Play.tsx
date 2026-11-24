@@ -124,9 +124,9 @@ export function PlayPage() {
   }, [gameId]);
 
   useEffect(() => {
-    if (game) document.title = `${game.title} · ChampMan Online`;
+    if (game) document.title = `${game.title} · RetroPCGames`;
     return () => {
-      document.title = "ChampMan Online";
+      document.title = "RetroPCGames";
     };
   }, [game]);
 
@@ -321,7 +321,7 @@ export function PlayPage() {
           {exitBtn}
           <div className="play-title">
             <strong>{game?.title ?? "Loading…"}</strong>
-            <span className="muted small slot-label">Career slot {slot}</span>
+            <span className="muted small slot-label">Save slot {slot}</span>
           </div>
           {statusEl}
           {keyboardBtn}

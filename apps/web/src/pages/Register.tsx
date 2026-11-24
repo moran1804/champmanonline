@@ -36,7 +36,7 @@ export function RegisterPage() {
   return (
     <div className="auth-card card">
       <h1>Create an account</h1>
-      <p className="muted">Pick a username and password and you're straight into the dugout.</p>
+      <p className="muted">Pick a username and password and you're straight in.</p>
       <form onSubmit={submit} className="form">
         <label>
           Username

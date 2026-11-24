@@ -4,6 +4,7 @@
     "title": "Championship Manager",
     "year": 1992,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship_Manager_DOS_Files_EN",
@@ -27,6 +28,7 @@
     "title": "Championship Manager Italia",
     "year": 1993,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship_Manager_Italia_DOS_Files_EN",
@@ -50,6 +52,7 @@
     "title": "Championship Manager 93/94",
     "year": 1993,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship_Manager_93_94_DOS_Files_EN",
@@ -71,6 +74,7 @@
     "title": "Championship Manager 2",
     "year": 1995,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship Manager 2 (v1.56)",
@@ -101,6 +105,7 @@
     "title": "Championship Manager 2 (Spanish league)",
     "year": 1995,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": false,
     "folder": "Championship_Manager_2_DOS_Files_EN",
@@ -133,6 +138,7 @@
     "title": "Championship Manager 96/97",
     "year": 1996,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship_Manager_96_97_DOS_Files_EN",
@@ -156,6 +162,7 @@
     "title": "Championship Manager 97/98",
     "year": 1997,
     "platform": "dos",
+    "category": "championship-manager",
     "emulator": "jsdos",
     "enabled": true,
     "folder": "Championship_Manager_97_98_DOS_Files_EN",
@@ -196,6 +203,7 @@
     "title": "Championship Manager 3",
     "year": 1999,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "tbd",
     "enabled": false,
     "folder": "Championship_Manager_3_Win_Preinstalled_EN",
@@ -206,6 +214,7 @@
     "title": "Championship Manager 99/00",
     "year": 1999,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "wine",
     "enabled": true,
     "folder": "Championship_Manager_99_00_Win_ROM_EN",
@@ -223,6 +232,7 @@
     "title": "Championship Manager 00/01",
     "year": 2000,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "wine",
     "enabled": true,
     "folder": "Championship_Manager_00_01_Win_ROM_EN",
@@ -240,6 +250,7 @@
     "title": "Championship Manager 01/02",
     "year": 2001,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "wine",
     "enabled": true,
     "folder": "Championship_Manager_01_02_Win_ISO_EN",
@@ -258,6 +269,7 @@
     "title": "Championship Manager 4",
     "year": 2003,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "tbd",
     "enabled": false,
     "folder": "Championship_Manager_4_Win_ROM_EN",
@@ -268,9 +280,927 @@
     "title": "Championship Manager 03/04",
     "year": 2003,
     "platform": "windows",
+    "category": "championship-manager",
     "emulator": "tbd",
     "enabled": false,
     "folder": "Championship_Manager_Season_03_04_Win_ISO_EN",
     "unavailable": "Its original disc uses SafeDisc copy protection, which can't run on today's systems."
+  },
+  {
+    "id": "monkey1",
+    "title": "The Secret of Monkey Island",
+    "year": 1990,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/monkey1",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "monkey"
+      ]
+    },
+    "note": "The game asks for a Dial-a-Pirate code from the original code wheel before you can play."
+  },
+  {
+    "id": "monkey2",
+    "title": "Monkey Island 2: LeChuck's Revenge",
+    "year": 1991,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/monkey2",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "monkey2 s"
+      ]
+    },
+    "note": "The game starts with its Mix 'n' Mojo copy check, which needs the original code wheel."
+  },
+  {
+    "id": "maniac",
+    "title": "Maniac Mansion",
+    "year": 1988,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/maniac",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "maniac"
+      ]
+    },
+    "note": "The game may ask for a door code from the original manual's code sheet."
+  },
+  {
+    "id": "zak",
+    "title": "Zak McKracken and the Alien Mindbenders",
+    "year": 1988,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/zak",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "zak"
+      ]
+    },
+    "note": "The game asks for a passport code from the original manual before travelling abroad."
+  },
+  {
+    "id": "atlantis",
+    "title": "Indiana Jones and the Fate of Atlantis",
+    "year": 1992,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/atlantis",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "atlantis"
+      ]
+    }
+  },
+  {
+    "id": "indyancients",
+    "title": "Indiana Jones in Revenge of the Ancients",
+    "year": 1987,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/indyancients",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "start"
+      ]
+    }
+  },
+  {
+    "id": "larry6",
+    "title": "Leisure Suit Larry 6: Shape Up or Slip Out!",
+    "year": 1993,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/larry6",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "mount d . -t cdrom",
+        "c:",
+        "lsl6cd"
+      ]
+    },
+    "note": "The first download is large (about 470 MB)."
+  },
+  {
+    "id": "larry7",
+    "title": "Leisure Suit Larry 7: Love for Sail!",
+    "year": 1996,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/larry7",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif",
+      "HYBRID.EXE"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "vesatest",
+        "sier"
+      ]
+    },
+    "files": {
+      "RESOURCE.CFG": "videoDrv  = VESA.DRV\r\nsoundDrv  = MIDNONE.DRV\r\naudioDrv  = DACBLAST.DRV\r\njoyDrv    = NO\r\ndirectory = \\\r\n minCPU=486\r\n minDOS=572\r\n mode=real\r\n minEMS=200\r\n CD=NO\r\n CPU=0\r\n VideoSpeed=0\r\n CPUSpeed=0\r\n CDROM=0\r\n mouseDrv  = NONE\r\n memoryDrv = NONE\r\n language  = 1\r\n audioSize = 200k\r\n minMemory = 1600k\r\n brightness= 0\r\n\r\n cmd       = LSL7\r\n\r\n \r\naudio=C:\\music \r\nresSfx=C:\\ \r\nresAud=C:\\ \r\nresMap=C:\\ \r\npatchDir=C:\\patches\\ \r\nmovieDir=C:\\movie \r\n"
+    }
+  },
+  {
+    "id": "doom",
+    "title": "Doom",
+    "year": 1993,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/doom",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "doom"
+      ]
+    }
+  },
+  {
+    "id": "udoom",
+    "title": "The Ultimate Doom",
+    "year": 1995,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/udoom",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "doom"
+      ]
+    }
+  },
+  {
+    "id": "doom2",
+    "title": "Doom II: Hell on Earth",
+    "year": 1994,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/doom2",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "doom2"
+      ]
+    }
+  },
+  {
+    "id": "tnt",
+    "title": "Final Doom: TNT Evilution",
+    "year": 1996,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/tnt",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "tnt"
+      ]
+    }
+  },
+  {
+    "id": "plutonia",
+    "title": "Final Doom: The Plutonia Experiment",
+    "year": 1996,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/plutonia",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "plutonia"
+      ]
+    }
+  },
+  {
+    "id": "wolf3d",
+    "title": "Wolfenstein 3D",
+    "year": 1992,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/wolf3d",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "wolf3d"
+      ]
+    }
+  },
+  {
+    "id": "duke3d",
+    "title": "Duke Nukem 3D: Atomic Edition",
+    "year": 1996,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/duke3d",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "imgmount d killaton1.iso -t iso -fs iso",
+        "c:",
+        "duke3d"
+      ],
+      "cputype": "pentium_slow",
+      "core": "normal"
+    },
+    "note": "This one includes the full original CD, so the first download is large (about 600 MB)."
+  },
+  {
+    "id": "dukecarib",
+    "title": "Duke Caribbean: Life's a Beach",
+    "year": 1997,
+    "platform": "dos",
+    "category": "shoot-em-up",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/dukecarib",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "imgmount d killaton1.iso -t iso -fs iso",
+        "c:",
+        "carib"
+      ],
+      "cputype": "pentium_slow",
+      "core": "normal"
+    },
+    "note": "Includes the Duke Nukem 3D CD it needs, so the first download is large (about 600 MB)."
+  },
+  {
+    "id": "civ",
+    "title": "Sid Meier's Civilization",
+    "year": 1991,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/civ",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "civ"
+      ]
+    },
+    "note": "Pick VGA at the graphics prompt. The game asks a question from the original manual partway through."
+  },
+  {
+    "id": "colonization",
+    "title": "Sid Meier's Colonization",
+    "year": 1994,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/colonization",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "colonize"
+      ]
+    }
+  },
+  {
+    "id": "pirates",
+    "title": "Sid Meier's Pirates!",
+    "year": 1987,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/pirates",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "pirates"
+      ]
+    },
+    "note": "Pick EGA at the graphics prompt. The game asks a question from the original manual at the start."
+  },
+  {
+    "id": "civilwar",
+    "title": "The Civil War",
+    "year": 1995,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/civilwar",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "memsize": 32,
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "civilwar"
+      ]
+    }
+  },
+  {
+    "id": "simcity2000",
+    "title": "SimCity 2000",
+    "year": 1993,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/simcity2000",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "sc2000"
+      ]
+    }
+  },
+  {
+    "id": "themepark",
+    "title": "Theme Park",
+    "year": 1994,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": false,
+    "folder": "RetroPCGames/themepark",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "park"
+      ]
+    },
+    "note": "Needs installing from its floppy disks, which the site can't do yet."
+  },
+  {
+    "id": "tankwars",
+    "title": "Tank Wars",
+    "year": 1992,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/tankwars",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "bomb"
+      ]
+    }
+  },
+  {
+    "id": "pop",
+    "title": "Prince of Persia",
+    "year": 1989,
+    "platform": "dos",
+    "category": "platform-action",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/pop",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "prince"
+      ]
+    }
+  },
+  {
+    "id": "pop2",
+    "title": "Prince of Persia 2: The Shadow and the Flame",
+    "year": 1993,
+    "platform": "dos",
+    "category": "platform-action",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/pop2",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "prince"
+      ]
+    }
+  },
+  {
+    "id": "ootw",
+    "title": "Out of This World",
+    "year": 1991,
+    "platform": "dos",
+    "category": "platform-action",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/ootw",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "world"
+      ]
+    },
+    "note": "If you see a memory warning, press 1 to carry on."
+  },
+  {
+    "id": "duke2",
+    "title": "Duke Nukem II",
+    "year": 1993,
+    "platform": "dos",
+    "category": "platform-action",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/duke2",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "nukem2"
+      ]
+    }
+  },
+  {
+    "id": "lemmings",
+    "title": "Lemmings",
+    "year": 1991,
+    "platform": "dos",
+    "category": "puzzle",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/lemmings",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "lemvga"
+      ]
+    },
+    "note": "Press 1 for VGA. The game asks for a word from the original manual before you can play."
+  },
+  {
+    "id": "ohnomore",
+    "title": "Oh No! More Lemmings",
+    "year": 1991,
+    "platform": "dos",
+    "category": "puzzle",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/ohnomore",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "vgalemm2"
+      ]
+    },
+    "note": "Press 1 for VGA."
+  },
+  {
+    "id": "lemmings2",
+    "title": "Lemmings 2: The Tribes",
+    "year": 1993,
+    "platform": "dos",
+    "category": "puzzle",
+    "emulator": "jsdos",
+    "enabled": false,
+    "folder": "RetroPCGames/lemmings2",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "fixed 20000",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "l2"
+      ]
+    },
+    "note": "Doesn't start in the emulator yet."
+  },
+  {
+    "id": "lemmings3",
+    "title": "All New World of Lemmings",
+    "year": 1994,
+    "platform": "dos",
+    "category": "puzzle",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/lemmings3",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "fixed 20000",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "l3cd c:\\"
+      ]
+    }
+  },
+  {
+    "id": "dott",
+    "title": "Day of the Tentacle",
+    "year": 1993,
+    "platform": "dos",
+    "category": "point-and-click",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/dott",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "tentacle"
+      ]
+    }
+  },
+  {
+    "id": "carmen",
+    "title": "Where in the World Is Carmen Sandiego? Deluxe",
+    "year": 1992,
+    "platform": "dos",
+    "category": "educational",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/carmen",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "imgmount d carmen.iso -t iso -fs iso",
+        "c:",
+        "cd \\deluxe",
+        "carmen"
+      ]
+    }
+  },
+  {
+    "id": "larry5",
+    "title": "Leisure Suit Larry 5: Passionate Patti Does a Little Undercover Work",
+    "year": 1991,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "jsdos",
+    "enabled": true,
+    "folder": "RetroPCGames/larry5",
+    "gameSubdir": ".",
+    "exclude": [
+      "cover.jpg",
+      "cover.png",
+      "cover.gif"
+    ],
+    "dosbox": {
+      "cycles": "max 50%",
+      "autoexec": [
+        "mount c .",
+        "c:",
+        "sierra"
+      ]
+    },
+    "files": {
+      "RESOURCE.CFG": "videoDrv = VGA320.DRV\r\nsoundDrv = ADL.DRV\r\nkbdDrv = IBMKBD.DRV\r\njoyDrv = NO\r\nminHunk = 240k\r\nlanguage = 1\r\n"
+    }
+  },
+  {
+    "id": "larry1",
+    "title": "Leisure Suit Larry in the Land of the Lounge Lizards",
+    "year": 1987,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/larry1",
+    "unavailable": "This copy is the Atari ST version, not the PC one."
+  },
+  {
+    "id": "larry2",
+    "title": "Leisure Suit Larry Goes Looking for Love (in Several Wrong Places)",
+    "year": 1988,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/larry2",
+    "unavailable": "This copy is the Atari ST version, not the PC one."
+  },
+  {
+    "id": "strippoker",
+    "title": "Strip Poker Professional: Data Disk 5",
+    "year": 1990,
+    "platform": "dos",
+    "category": "adult",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/strippoker",
+    "unavailable": "This is only an add-on disk; it needs the Strip Poker Professional base game."
+  },
+  {
+    "id": "flashback",
+    "title": "Flashback: The Quest for Identity",
+    "year": 1993,
+    "platform": "dos",
+    "category": "platform-action",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/flashback",
+    "unavailable": "We only have the manual for this one, not the game itself."
+  },
+  {
+    "id": "redalert",
+    "title": "Command & Conquer: Red Alert",
+    "year": 1996,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/redalert",
+    "unavailable": "The only copy we have is cracked. EA released Red Alert as freeware in 2008, so an official copy can be added."
+  },
+  {
+    "id": "civwin",
+    "title": "Sid Meier's CivWin (Civilization for Windows)",
+    "year": 1995,
+    "platform": "dos",
+    "category": "strategy-sim",
+    "emulator": "tbd",
+    "enabled": false,
+    "folder": "RetroPCGames/civwin",
+    "unavailable": "This is a Windows 3.1 game, which the site can't run yet."
   }
 ]

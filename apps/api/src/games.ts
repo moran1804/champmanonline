@@ -3,7 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import type { FastifyInstance } from "fastify";
 import { once } from "node:events";
-import { Zip, ZipDeflate } from "fflate";
+import zlib from "node:zlib";
+import { Readable } from "node:stream";
+import { Zip, type ZipInputFile } from "fflate";
 import { config } from "./config.ts";
 import { requireApproved } from "./auth.ts";
 import { findLookupFile, readLookup } from "./lookup.ts";
@@ -13,6 +15,8 @@ export type Game = {
   title: string;
   year: number;
   platform: "dos" | "windows";
+  /** Homepage group, e.g. "championship-manager", "point-and-click", "adult". */
+  category: string;
   emulator: "jsdos" | "wine" | "tbd";
   enabled: boolean;
   /** Sub-folder of GAMES_ROOT; the game itself is in "<folder>/<gameSubdir>". */
@@ -22,7 +26,15 @@ export type Game = {
   /** Folder (under GAMES_ROOT) to take the cover image from, if not `folder`. */
   coverFolder?: string;
   exclude?: string[];
-  dosbox?: { cycles?: string; memsize?: number; autoexec: string[] };
+  dosbox?: {
+    cycles?: string;
+    memsize?: number;
+    cputype?: string;
+    core?: string;
+    /** Extra dosbox.conf lines (with their [section] headers), e.g. ["[sblaster]", "sbtype=none"]. */
+    extra?: string[];
+    autoexec: string[];
+  };
   /**
    * Files to add to (or replace in) the bundle, keyed by path inside the game folder, with text
    * content. Matching is case-insensitive, as in DOS. Used for fixing install-specific config files.
@@ -71,7 +83,7 @@ function gameDir(game: Game) {
 function findCover(game: Game): string | null {
   const dir = path.join(config.gamesRoot, game.coverFolder ?? game.folder);
   try {
-    const f = fs.readdirSync(dir).find((n) => /_cover_.*\.(webp|jpe?g|png)$/i.test(n));
+    const f = fs.readdirSync(dir).find((n) => /(_cover_.*|^cover)\.(webp|jpe?g|png|gif)$/i.test(n));
     return f ? path.join(dir, f) : null;
   } catch {
     return null;
@@ -121,8 +133,8 @@ export function dosboxConf(game: Game): string {
     `memsize=${d.memsize ?? 16}`,
     "",
     "[cpu]",
-    "core=auto",
-    "cputype=auto",
+    `core=${d.core ?? "auto"}`,
+    `cputype=${d.cputype ?? "auto"}`,
     `cycles=${d.cycles ?? "max"}`,
     "",
     "[mixer]",
@@ -132,6 +144,7 @@ export function dosboxConf(game: Game): string {
     "sbtype=sb16",
     "oplmode=auto",
     "",
+    ...(d.extra?.length ? [...d.extra, ""] : []),
     "[autoexec]",
     "echo off",
     ...d.autoexec,
@@ -209,31 +222,42 @@ export async function ensureBundle(game: Game): Promise<{ file: string; version:
     const drain = async () => {
       if (out.writableNeedDrain) await once(out, "drain");
     };
-    const addBytes = (name: string, data: Uint8Array) => {
-      const entry = new ZipDeflate(name, { level: 6 });
+    // Compression is done by Node's zlib, not fflate's ZipDeflate: fflate 0.8.3's streaming deflate
+    // produced corrupt data for some files (e.g. Colonization's VICEROY.PAL), which js-dos rejects.
+    const addEntry = async (name: string, input: Readable, level: number) => {
+      const entry = { filename: name, size: 0, crc: 0, compression: 8 } as ZipInputFile;
       zip.add(entry);
-      entry.push(data, true);
+      let crc = 0;
+      let size = 0;
+      input.on("data", (c: Buffer) => {
+        crc = zlib.crc32(c, crc);
+        size += c.length;
+      });
+      const deflate = input.pipe(zlib.createDeflateRaw({ level }));
+      for await (const chunk of deflate) {
+        entry.ondata!(null, new Uint8Array(chunk as Buffer), false);
+        await drain();
+      }
+      entry.crc = crc;
+      entry.size = size;
+      entry.ondata!(null, new Uint8Array(0), true);
+      await drain();
     };
+    const addBytes = (name: string, data: Uint8Array) => addEntry(name, Readable.from([Buffer.from(data)]), 6);
 
-    addBytes(".jsdos/dosbox.conf", new TextEncoder().encode(conf));
+    await addBytes(".jsdos/dosbox.conf", new TextEncoder().encode(conf));
     for (const f of files) {
       const o = overrides.get(f.toLowerCase());
       if (o) {
         overrides.delete(f.toLowerCase());
-        addBytes(f, o.data);
+        await addBytes(f, o.data);
         continue;
       }
       // Big files (CD images, videos) get fast compression; the rest is compressed harder.
-      const entry = new ZipDeflate(f, { level: (sizes.get(f) ?? 0) > 20_000_000 ? 1 : 6 });
-      zip.add(entry);
-      for await (const chunk of fs.createReadStream(path.join(src, f), { highWaterMark: 4 * 1024 * 1024 })) {
-        entry.push(new Uint8Array(chunk as Buffer));
-        await drain();
-      }
-      entry.push(new Uint8Array(0), true);
-      await drain();
+      const level = (sizes.get(f) ?? 0) > 20_000_000 ? 1 : 6;
+      await addEntry(f, fs.createReadStream(path.join(src, f), { highWaterMark: 4 * 1024 * 1024 }), level);
     }
-    for (const o of overrides.values()) addBytes(o.name, o.data);
+    for (const o of overrides.values()) await addBytes(o.name, o.data);
     zip.end();
     await done;
     fs.renameSync(tmp, file);
@@ -261,6 +285,7 @@ export async function gameRoutes(app: FastifyInstance) {
         title: g.title,
         year: g.year,
         platform: g.platform,
+        category: g.category,
         playable: isPlayable(g),
         unavailable: g.unavailable ?? null,
         hasCover: findCover(g) !== null,
@@ -331,7 +356,10 @@ export async function gameRoutes(app: FastifyInstance) {
     if (!cover) return reply.code(404).send({ error: "No cover" });
     const ext = path.extname(cover).slice(1).toLowerCase();
     reply
-      .header("Content-Type", ext === "webp" ? "image/webp" : ext === "png" ? "image/png" : "image/jpeg")
+      .header(
+        "Content-Type",
+        ext === "webp" ? "image/webp" : ext === "png" ? "image/png" : ext === "gif" ? "image/gif" : "image/jpeg",
+      )
       .header("Cache-Control", "public, max-age=86400");
     return reply.send(fs.createReadStream(cover));
   });

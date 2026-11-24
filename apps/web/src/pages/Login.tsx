@@ -33,7 +33,7 @@ export function LoginPage() {
   return (
     <div className="auth-card card">
       <h1>Sign in</h1>
-      <p className="muted">Pick up where you left off with the classic Championship Manager games.</p>
+      <p className="muted">Classic PC games in your browser, from Championship Manager to Doom and Monkey Island. Pick up where you left off.</p>
       <form onSubmit={submit} className="form">
         <label>
           Username

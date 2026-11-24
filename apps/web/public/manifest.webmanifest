@@ -1,7 +1,7 @@
 {
-  "name": "ChampMan Online",
-  "short_name": "ChampMan",
-  "description": "Play the classic Championship Manager games.",
+  "name": "RetroPCGames",
+  "short_name": "RetroPC",
+  "description": "Play classic DOS and Windows PC games in your browser.",
   "start_url": "/",
   "scope": "/",
   "display": "fullscreen",

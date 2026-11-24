@@ -44,7 +44,7 @@ export function GamePage() {
         <div>
           <h1>{game.title}</h1>
           <p className="muted">
-            Each slot is a separate career. Save inside the game as usual; the site then stores your save files with your
+            Each slot is a separate saved game. Save inside the game as usual; the site then stores your save files with your
             account automatically.
           </p>
           {game.note && <p className="game-note">{game.note}</p>}
@@ -70,7 +70,7 @@ export function GamePage() {
                 <span className="slot-number">{slot}</span>
                 {save ? (
                   <div>
-                    <strong>{save.label || `Career ${slot}`}</strong>
+                    <strong>{save.label || `Save ${slot}`}</strong>
                     <div className="muted small">Last saved {formatWhen(save.updatedAt)}</div>
                   </div>
                 ) : (
@@ -86,7 +86,7 @@ export function GamePage() {
                     <button
                       className="btn ghost small"
                       onClick={async () => {
-                        const label = window.prompt("Name this career", save.label || `Career ${slot}`);
+                        const label = window.prompt("Name this save", save.label || `Save ${slot}`);
                         if (label === null) return;
                         await api.renameSave(game.id, slot, label.trim());
                         void load();
@@ -97,7 +97,7 @@ export function GamePage() {
                     <button
                       className="btn danger small"
                       onClick={async () => {
-                        if (!window.confirm(`Delete "${save.label || `Career ${slot}`}"? This can't be undone.`)) return;
+                        if (!window.confirm(`Delete "${save.label || `Save ${slot}`}"? This can't be undone.`)) return;
                         await api.deleteSave(game.id, slot);
                         void load();
                       }}
@@ -107,7 +107,7 @@ export function GamePage() {
                   </>
                 ) : (
                   <button className="btn" onClick={() => navigate(`/play/${game.id}/${slot}`)}>
-                    New career
+                    New game
                   </button>
                 )}
               </div>
@@ -119,13 +119,13 @@ export function GamePage() {
       <div className="card tips">
         <h2>How saving works</h2>
         <ol>
-          <li>Inside Championship Manager, use the game's own <em>Save Game</em> option as you normally would.</li>
+          <li>Inside {game.title}, use the game's own save option as you normally would.</li>
           <li>
-            The site checks for new save files every 30 seconds and uploads them. You can also press <em>Save to cloud</em>{" "}
+            The site checks for new save files regularly and uploads them. You can also press <em>Save to cloud</em>{" "}
             in the toolbar at any time.
           </li>
           <li>
-            When you come back, press <em>Continue</em> here, then choose <em>Load Game</em> inside Championship Manager.
+            When you come back, press <em>Continue</em> here, then load your save inside the game.
           </li>
         </ol>
       </div>
