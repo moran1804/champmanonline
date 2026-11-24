@@ -323,6 +323,11 @@ export function PlayPage() {
             <strong>{game?.title ?? "Loading…"}</strong>
             <span className="muted small slot-label">Save slot {slot}</span>
           </div>
+          {game?.mouseLock && !touch && (
+            <span className="muted small mouse-hint" title="The game takes over the mouse so its pointer matches yours">
+              🖱 Click the game to lock the mouse · Esc releases it
+            </span>
+          )}
           {statusEl}
           {keyboardBtn}
           {saveBtn}

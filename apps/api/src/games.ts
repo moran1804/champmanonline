@@ -40,6 +40,11 @@ export type Game = {
    * content. Matching is case-insensitive, as in DOS. Used for fixing install-specific config files.
    */
   files?: Record<string, string>;
+  /**
+   * Desktop: capture the mouse when the game is clicked (pointer lock; Esc releases). Needed by games
+   * that draw their own cursor or turn with the mouse, whose cursor otherwise drifts from the pointer.
+   */
+  mouseLock?: boolean;
   /** How taps move the DOS mouse on touch screens; "relative" for games that only read mouse movement. */
   touchMouse?: "absolute" | "relative";
   /** Shown on the game's page, e.g. edition quirks or how to answer its copy check. */
@@ -126,7 +131,7 @@ export function dosboxConf(game: Game): string {
   const d = game.dosbox!;
   return [
     "[sdl]",
-    "autolock=false",
+    `autolock=${game.mouseLock ? "true" : "false"}`,
     "",
     "[dosbox]",
     "machine=svga_s3",
@@ -311,6 +316,7 @@ export async function gameRoutes(app: FastifyInstance) {
         hasLookup: lookupFileFor(game) !== null,
         note: game.note ?? null,
         touchMouse: game.touchMouse ?? "absolute",
+        mouseLock: !!game.mouseLock,
         maxSlots: config.maxSlots,
       },
     };

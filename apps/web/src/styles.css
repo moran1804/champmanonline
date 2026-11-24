@@ -973,3 +973,12 @@ a {
 .adult-gate p {
   margin: 0;
 }
+
+.mouse-hint {
+  white-space: nowrap;
+}
+@media (max-width: 1100px) {
+  .mouse-hint {
+    display: none;
+  }
+}

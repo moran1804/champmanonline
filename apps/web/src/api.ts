@@ -32,6 +32,8 @@ export type GameDetail = {
   hasLookup: boolean;
   note: string | null;
   touchMouse: "absolute" | "relative";
+  /** Desktop: the game captures the mouse when clicked (Esc releases). */
+  mouseLock: boolean;
   maxSlots: number;
 };
 
