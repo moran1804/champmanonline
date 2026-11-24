@@ -265,7 +265,7 @@ export function PlayPage() {
       <span className="lbl">Results</span>
     </button>
   );
-  const manualBtn = (
+  const manualBtn = game?.hasManual && (
     <button
       className={`btn small ${showManual ? "primary" : "ghost"}`}
       onClick={() => setShowManual((v) => !v)}

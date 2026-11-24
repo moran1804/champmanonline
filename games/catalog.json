@@ -198,25 +198,42 @@
     "platform": "windows",
     "emulator": "tbd",
     "enabled": false,
-    "folder": "Championship_Manager_3_Win_Preinstalled_EN"
+    "folder": "Championship_Manager_3_Win_Preinstalled_EN",
+    "unavailable": "We don't have an original copy of this one yet."
   },
   {
     "id": "cm9900",
     "title": "Championship Manager 99/00",
     "year": 1999,
     "platform": "windows",
-    "emulator": "tbd",
-    "enabled": false,
-    "folder": "Championship_Manager_99_00_Win_ROM_EN"
+    "emulator": "wine",
+    "enabled": true,
+    "folder": "Championship_Manager_99_00_Win_ROM_EN",
+    "seat": {
+      "installDir": "Installed",
+      "windowsPath": "C:\\Program Files (x86)\\Championship Manager 99-00",
+      "exe": "cm9900.exe",
+      "discDir": "Disc",
+      "registry": "install.reg"
+    },
+    "note": "This game runs on our server and is streamed to your browser, so it needs a steady connection. Save inside the game as usual: your saved games are copied to the cloud every minute and when you exit."
   },
   {
     "id": "cm0001",
     "title": "Championship Manager 00/01",
     "year": 2000,
     "platform": "windows",
-    "emulator": "tbd",
-    "enabled": false,
-    "folder": "Championship_Manager_00_01_Win_ROM_EN"
+    "emulator": "wine",
+    "enabled": true,
+    "folder": "Championship_Manager_00_01_Win_ROM_EN",
+    "seat": {
+      "installDir": "Installed",
+      "windowsPath": "C:\\Program Files (x86)\\Championship Manager 00-01",
+      "exe": "cm0001.exe",
+      "discDir": "Disc",
+      "registry": "install.reg"
+    },
+    "note": "This game runs on our server and is streamed to your browser, so it needs a steady connection. Save inside the game as usual: your saved games are copied to the cloud every minute and when you exit."
   },
   {
     "id": "cm0102",
@@ -243,7 +260,8 @@
     "platform": "windows",
     "emulator": "tbd",
     "enabled": false,
-    "folder": "Championship_Manager_4_Win_ROM_EN"
+    "folder": "Championship_Manager_4_Win_ROM_EN",
+    "unavailable": "Its original disc uses SafeDisc copy protection, which can't run on today's systems."
   },
   {
     "id": "cm0304",
@@ -252,6 +270,7 @@
     "platform": "windows",
     "emulator": "tbd",
     "enabled": false,
-    "folder": "Championship_Manager_Season_03_04_Win_ISO_EN"
+    "folder": "Championship_Manager_Season_03_04_Win_ISO_EN",
+    "unavailable": "Its original disc uses SafeDisc copy protection, which can't run on today's systems."
   }
 ]

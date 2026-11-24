@@ -34,6 +34,8 @@ export type Game = {
   note?: string;
   /** Text/RTF/CSV file (relative to the version folder) with the manual-lookup answers. */
   lookupFile?: string;
+  /** Why this game can't be offered (shown on its tile instead of "Coming soon"). */
+  unavailable?: string;
   /** Manual PDF (relative to the version folder), if it isn't a "*manual*.pdf" directly in it. */
   manualFile?: string;
   /** Windows games: how a seat runs it. Paths are relative to the version folder. */
@@ -260,6 +262,7 @@ export async function gameRoutes(app: FastifyInstance) {
         year: g.year,
         platform: g.platform,
         playable: isPlayable(g),
+        unavailable: g.unavailable ?? null,
         hasCover: findCover(g) !== null,
       })),
     };

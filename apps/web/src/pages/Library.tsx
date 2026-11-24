@@ -47,13 +47,14 @@ export function LibraryPage() {
                 ) : (
                   <div className="cover-placeholder">{g.title}</div>
                 )}
-                {!g.playable && <span className="badge">Coming soon</span>}
+                {!g.playable && <span className="badge">{g.unavailable ? "Not available" : "Coming soon"}</span>}
               </div>
               <div className="tile-body">
                 <strong>{g.title}</strong>
                 <span className="muted small">
                   {g.year} · {g.platform === "dos" ? "DOS" : "Windows"}
                 </span>
+                {g.unavailable && <span className="muted small">{g.unavailable}</span>}
               </div>
             </>
           );

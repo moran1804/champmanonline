@@ -7,7 +7,7 @@
 - **Hosting** is on TrueNAS as a Custom App, published through a Cloudflare Tunnel.
 - **Phones and tablets** are supported: tap to click, long-press to right-click, the phone's own keyboard via ⌨, and side controls when the phone is held sideways.
 
-Currently playable: **CM1, CM Italia, CM 93/94, CM2 (v1.56), CM 96/97 and CM 97/98** (DOS, in the browser) and **CM 01/02** (Windows, streamed from a seat). The other Windows versions show as "Coming soon".
+Currently playable: **CM1, CM Italia, CM 93/94, CM2 (v1.56), CM 96/97 and CM 97/98** (DOS, in the browser) and **CM 99/00, CM 00/01 and CM 01/02** (Windows, streamed from a seat). **CM 03/04 and CM4** can't be offered: their discs use SafeDisc 4, which needs a Windows kernel driver that neither Wine nor current Windows has, and we don't use cracks. There's no original CM3 in the collection.
 
 ## How it works
 
@@ -92,6 +92,7 @@ Browser ──(signed-in WebSocket /api/seat/ws)── app ──► seatN: Xvnc
 - **The stream.** Only the player who owns a seat can open its stream; the app checks their session and relays the WebSocket to that seat's websockify. The browser shows it with noVNC (`seat.html`, which offers the Play page the same API as the DOS player).
 - **Saves.** Each session starts from a fresh copy of the game's read-only master install, with the player's slot files laid on top. The slot is every file that differs from the master. The app copies it into the slot every minute, on **Save to cloud** and when the session ends (Exit, the game closing, 5 minutes after the tab closes, or `SEAT_IDLE_MINUTES` without input).
 - **Sound.** The game plays into a PulseAudio null sink in the seat, streamed as raw 22.05 kHz mono mu-law (~176 kbit/s) over a second WebSocket (`/api/seat/audio`, relayed like the screen). The browser plays it from an ~80 ms jitter buffer in an AudioWorklet (a ScriptProcessor fallback on plain-http pages) and drops any backlog over 250 ms, so sound stays in step with the picture. 🔊/🔇 on the Play page mutes and stops the stream.
+- **Disc images.** Raw images (`.img`/`.bin`/`.mdf`, 2352- or 2448-byte sectors) are converted to plain ISO first. CM 99/00 and 00/01 check for `.AFP` files with impossibly large sizes that overlap the rest of the disc, so the disc is reproduced exactly as a drive would present it (each file at its declared size, filled from its extent on the disc), rather than with a normal extractor that trims them.
 - **The game's CD** is the unpacked disc mounted as `D:` (with a `.windows-label` file for its volume name), so the original CD check passes without any crack.
 
 ### Adding a Windows game
@@ -107,4 +108,4 @@ Browser ──(signed-in WebSocket /api/seat/ws)── app ──► seatN: Xvnc
 ## Roadmap
 
 - **Phase 2:** the rest of the DOS games (CM1, Italia, CM2, 96/97, 97/98).
-- **V2 (in progress):** Windows games via seats. CM 01/02 is done; next CM 03/04, then test CM 99/00, 00/01 and CM4 (without cracks), and touch support for seats.
+- **V2:** Windows games via seats: CM 99/00, 00/01 and 01/02 are done. Next: touch support for seats on phones.

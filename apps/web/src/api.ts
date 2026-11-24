@@ -13,6 +13,8 @@ export type GameSummary = {
   year: number;
   platform: "dos" | "windows";
   playable: boolean;
+  /** Why it can't be played, if it never will be (otherwise it's "Coming soon"). */
+  unavailable: string | null;
   hasCover: boolean;
 };
 
