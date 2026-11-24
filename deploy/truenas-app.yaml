@@ -27,11 +27,35 @@ services:
       # Cloudflare serves the site over HTTPS, so session cookies are Secure-only.
       COOKIE_SECURE: "true"
       TZ: Europe/London
+      # Windows-game seats (the services below) and the secret the app uses to control them.
+      SEATS: seat1,seat2,seat3,seat4
+      SEAT_TOKEN: CHANGE_ME_random_secret
     volumes:
       - /mnt/CHANGE_ME_POOL/apps/champmanonline/data:/data
       - /mnt/CHANGE_ME_POOL/apps/champmanonline/games:/games:ro
     ports:
       - "30080:8080"
+    depends_on:
+      - seat1
+      - seat2
+      - seat3
+      - seat4
+
+  # Windows games: each seat runs one player's game (Wine on a virtual screen) and streams it via the app.
+  # To allow more players at once, copy a seat (seat5: *seat) and add its name to SEATS above.
+  seat1: &seat
+    image: ghcr.io/moran1804/champmanonline-seat:latest
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      SEAT_TOKEN: CHANGE_ME_random_secret
+    volumes:
+      - /mnt/CHANGE_ME_POOL/apps/champmanonline/games:/games:ro
+    mem_limit: 1536m
+    cpus: 2
+  seat2: *seat
+  seat3: *seat
+  seat4: *seat
 
   cloudflared:
     image: cloudflare/cloudflared:latest

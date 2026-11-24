@@ -166,7 +166,7 @@ async function start() {
 
     // Fetch the save before starting. If this fails we must not start: an empty session
     // would overwrite the cloud copy on the next auto-sync.
-    const [bundle, existing] = await Promise.all([fetchBundle(game.bundleUrl), api.downloadSave(gameId, slot)]);
+    const [bundle, existing] = await Promise.all([fetchBundle(game.bundleUrl!), api.downloadSave(gameId, slot)]);
     if (existing) {
       savedFiles = unzipSync(existing);
       lastHash = await sha256(existing);
@@ -175,7 +175,7 @@ async function start() {
     report({ kind: "loading", message: "Starting the emulator…" });
     const Dos = await loadJsDos();
     props = Dos(document.getElementById("dos")!, {
-      dosboxConf: turbo ? game.dosboxConf.replace(/^cycles=.*$/m, "cycles=max") : game.dosboxConf,
+      dosboxConf: turbo ? game.dosboxConf!.replace(/^cycles=.*$/m, "cycles=max") : game.dosboxConf!,
       initFs: existing ? [bundle, existing] : bundle,
       pathPrefix: `${JSDOS_BASE}emulators/`,
       autoStart: true,

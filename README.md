@@ -7,7 +7,7 @@
 - **Hosting** is on TrueNAS as a Custom App, published through a Cloudflare Tunnel.
 - **Phones and tablets** are supported: tap to click, long-press to right-click, the phone's own keyboard via ⌨, and side controls when the phone is held sideways.
 
-Currently playable (all DOS): **CM1, CM Italia, CM 93/94, CM2 (v1.56), CM 96/97 and CM 97/98**. The Windows versions show as "Coming soon".
+Currently playable: **CM1, CM Italia, CM 93/94, CM2 (v1.56), CM 96/97 and CM 97/98** (DOS, in the browser) and **CM 01/02** (Windows, streamed from a seat). The other Windows versions show as "Coming soon".
 
 ## How it works
 
@@ -80,9 +80,30 @@ Other catalog options:
 
 **Bundles** are zipped as a stream and cached in `/data/cache/bundles`. The first player to open a game after its files change waits for the build, which takes about 8 seconds for CM2.
 
+## Windows games (seats)
+
+Windows games can't run in the browser, so they run on the server and are streamed:
+
+```
+Browser ──(signed-in WebSocket /api/seat/ws)── app ──► seatN: Xvnc + websockify + Wine (+ seat agent :7000)
+```
+
+- **Seats.** A seat (`docker/seat`, image `champmanonline-seat`) is one Wine "PC" with an 800×600 virtual screen. The TrueNAS YAML defines a fixed pool of them (`seat1`…`seat4`), and the app hands out a free one when someone presses Play. The app never gets access to Docker.
+- **The stream.** Only the player who owns a seat can open its stream; the app checks their session and relays the WebSocket to that seat's websockify. The browser shows it with noVNC (`seat.html`, which offers the Play page the same API as the DOS player).
+- **Saves.** Each session starts from a fresh copy of the game's read-only master install, with the player's slot files laid on top. The slot is every file that differs from the master. The app copies it into the slot every minute, on **Save to cloud** and when the session ends (Exit, the game closing, 5 minutes after the tab closes, or `SEAT_IDLE_MINUTES` without input).
+- **The game's CD** is the unpacked disc mounted as `D:` (with a `.windows-label` file for its volume name), so the original CD check passes without any crack.
+
+### Adding a Windows game
+1. Install it once in a seat (run its installer under Wine against the unpacked disc) and copy the installed folder to `<version folder>/Installed`. Put the unpacked disc in `<version folder>/Disc`, and export the installer's registry keys to `<version folder>/install.reg`.
+2. Add a `seat` block to its catalog entry and set `"emulator": "wine"`, as for CM 01/02:
+   ```json
+   "seat": { "installDir": "Installed", "windowsPath": "C:\\Program Files (x86)\\Championship Manager 01-02",
+             "exe": "cm0102.exe", "discDir": "Disc", "registry": "install.reg" }
+   ```
+
+**Testing seats needs an x86 machine.** On Apple Silicon, Rosetta can't run 32-bit Windows code inside Linux, so build and test seats on the NAS.
+
 ## Roadmap
 
 - **Phase 2:** the rest of the DOS games (CM1, Italia, CM2, 96/97, 97/98).
-- **Phase 3:** the Windows games (CM 99/00 to CM4). Two options to evaluate:
-  - js-dos's DOSBox-X Windows 9x mode, which runs in the browser.
-  - A per-session Wine container streamed to the browser over noVNC/Selkies.
+- **V2 (in progress):** Windows games via seats. CM 01/02 is done; next CM 03/04, then test CM 99/00, 00/01 and CM4 (without cracks), and touch support for seats.

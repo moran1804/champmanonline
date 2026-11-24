@@ -42,6 +42,18 @@ function createSession(reply: FastifyReply, userId: number) {
   });
 }
 
+/** The signed-in user for a raw Cookie header (for WebSocket upgrades, which bypass Fastify's hooks). */
+export function userFromCookieHeader(header: string | undefined): User | null {
+  if (!header) return null;
+  for (const part of header.split(";")) {
+    const i = part.indexOf("=");
+    if (i < 0 || part.slice(0, i).trim() !== SESSION_COOKIE) continue;
+    const token = decodeURIComponent(part.slice(i + 1).trim());
+    return (findSessionUser.get(hashToken(token), Date.now()) as User | undefined) ?? null;
+  }
+  return null;
+}
+
 export function requireUser(req: FastifyRequest, reply: FastifyReply, done: () => void) {
   if (!req.user) {
     reply.code(401).send({ error: "Not signed in" });

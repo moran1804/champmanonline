@@ -7,6 +7,7 @@ import { config } from "./config.ts";
 import { authRoutes, ensureAdmin } from "./auth.ts";
 import { adminRoutes } from "./admin.ts";
 import { gameRoutes } from "./games.ts";
+import { seatRoutes } from "./seats.ts";
 import { saveRoutes } from "./saves.ts";
 
 const app = Fastify({
@@ -34,6 +35,7 @@ await authRoutes(app);
 await app.register(adminRoutes);
 await app.register(gameRoutes);
 await app.register(saveRoutes);
+await app.register(seatRoutes);
 
 if (fs.existsSync(config.webDir)) {
   await app.register(fastifyStatic, { root: config.webDir, wildcard: false });

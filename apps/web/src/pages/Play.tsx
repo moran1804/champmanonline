@@ -191,7 +191,13 @@ export function PlayPage() {
     );
   }
 
-  const src = game ? `/player.html?${new URLSearchParams({ game: game.id, slot: String(slot), speed })}` : null;
+  // Windows games stream from a server-side seat; DOS games run in the browser.
+  const windows = game?.emulator === "wine";
+  const src = !game
+    ? null
+    : windows
+      ? `/seat.html?${new URLSearchParams({ game: game.id, slot: String(slot) })}`
+      : `/player.html?${new URLSearchParams({ game: game.id, slot: String(slot), speed })}`;
   const busy = status.kind === "loading" || status.kind === "saving" || exiting;
 
   const statusEl = (
@@ -248,7 +254,8 @@ export function PlayPage() {
       <span className="lbl">Manual</span>
     </button>
   );
-  const speedBtn = (
+  // Speed only applies to the DOS emulator.
+  const speedBtn = !windows && (
     <button
       className={`btn small ${speed === "turbo" ? "primary" : "ghost"}`}
       onClick={() => void changeSpeed()}

@@ -21,9 +21,10 @@ export type GameDetail = {
   title: string;
   year: number;
   platform: "dos" | "windows";
-  emulator: string;
-  bundleUrl: string;
-  dosboxConf: string;
+  emulator: "jsdos" | "wine";
+  /** DOS games only. */
+  bundleUrl: string | null;
+  dosboxConf: string | null;
   hasManual: boolean;
   hasLookup: boolean;
   note: string | null;

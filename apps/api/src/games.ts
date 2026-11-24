@@ -13,7 +13,7 @@ export type Game = {
   title: string;
   year: number;
   platform: "dos" | "windows";
-  emulator: "jsdos" | "tbd";
+  emulator: "jsdos" | "wine" | "tbd";
   enabled: boolean;
   /** Sub-folder of GAMES_ROOT; the game itself is in "<folder>/<gameSubdir>". */
   folder: string;
@@ -34,6 +34,24 @@ export type Game = {
   note?: string;
   /** Text/RTF/CSV file (relative to the version folder) with the manual-lookup answers. */
   lookupFile?: string;
+  /** Manual PDF (relative to the version folder), if it isn't a "*manual*.pdf" directly in it. */
+  manualFile?: string;
+  /** Windows games: how a seat runs it. Paths are relative to the version folder. */
+  seat?: SeatGame;
+};
+
+export type SeatGame = {
+  /** Ready-installed copy of the game (copied fresh for every session). */
+  installDir: string;
+  /** Where the installer put it, e.g. "C:\\Program Files (x86)\\Championship Manager 01-02". */
+  windowsPath: string;
+  /** Executable inside the install folder. */
+  exe: string;
+  args?: string[];
+  /** Unpacked CD, mounted as D: (with a .windows-label file for the volume name). */
+  discDir?: string;
+  /** .reg file with the installer's registry keys. */
+  registry?: string;
 };
 
 export function loadCatalog(): Game[] {
@@ -61,6 +79,10 @@ function findCover(game: Game): string | null {
 /** A manual PDF in the version folder, e.g. "Game Files/<folder>/manual.pdf" (any name containing "manual"). */
 function findManual(game: Game): string | null {
   const dir = path.join(config.gamesRoot, game.folder);
+  if (game.manualFile) {
+    const f = path.join(dir, game.manualFile);
+    return f.startsWith(dir + path.sep) && fs.existsSync(f) ? f : null;
+  }
   try {
     const f = fs.readdirSync(dir).find((n) => /manual.*\.pdf$/i.test(n) && !n.startsWith("._"));
     return f ? path.join(dir, f) : null;
@@ -79,7 +101,11 @@ function lookupFileFor(game: Game): string | null {
 }
 
 export function isPlayable(game: Game): boolean {
-  return game.enabled && game.emulator === "jsdos" && !!game.dosbox && fs.existsSync(gameDir(game));
+  if (!game.enabled) return false;
+  if (game.emulator === "jsdos") return !!game.dosbox && fs.existsSync(gameDir(game));
+  if (game.emulator === "wine")
+    return config.seats.length > 0 && !!game.seat && fs.existsSync(path.join(config.gamesRoot, game.folder, game.seat.installDir));
+  return false;
 }
 
 export function dosboxConf(game: Game): string {
@@ -242,7 +268,8 @@ export async function gameRoutes(app: FastifyInstance) {
   app.get<{ Params: { id: string } }>("/api/games/:id", { preHandler: requireApproved }, async (req, reply) => {
     const game = getGame(req.params.id);
     if (!game || !isPlayable(game)) return reply.code(404).send({ error: "Game not found" });
-    const { version } = await ensureBundle(game);
+    const dos = game.emulator === "jsdos";
+    const version = dos ? (await ensureBundle(game)).version : null;
     return {
       game: {
         id: game.id,
@@ -250,8 +277,8 @@ export async function gameRoutes(app: FastifyInstance) {
         year: game.year,
         platform: game.platform,
         emulator: game.emulator,
-        bundleUrl: `/api/games/${game.id}/bundle?v=${version}`,
-        dosboxConf: dosboxConf(game),
+        bundleUrl: dos ? `/api/games/${game.id}/bundle?v=${version}` : null,
+        dosboxConf: dos ? dosboxConf(game) : null,
         hasManual: findManual(game) !== null,
         hasLookup: lookupFileFor(game) !== null,
         note: game.note ?? null,
@@ -263,7 +290,7 @@ export async function gameRoutes(app: FastifyInstance) {
 
   app.get<{ Params: { id: string } }>("/api/games/:id/bundle", { preHandler: requireApproved }, async (req, reply) => {
     const game = getGame(req.params.id);
-    if (!game || !isPlayable(game)) return reply.code(404).send({ error: "Game not found" });
+    if (!game || !isPlayable(game) || game.emulator !== "jsdos") return reply.code(404).send({ error: "Game not found" });
     const { file, version } = await ensureBundle(game);
     reply
       .header("Content-Type", "application/zip")

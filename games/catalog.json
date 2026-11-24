@@ -223,9 +223,18 @@
     "title": "Championship Manager 01/02",
     "year": 2001,
     "platform": "windows",
-    "emulator": "tbd",
-    "enabled": false,
-    "folder": "Championship_Manager_01_02_Win_ISO_EN"
+    "emulator": "wine",
+    "enabled": true,
+    "folder": "Championship_Manager_01_02_Win_ISO_EN",
+    "seat": {
+      "installDir": "Installed",
+      "windowsPath": "C:\\Program Files (x86)\\Championship Manager 01-02",
+      "exe": "cm0102.exe",
+      "discDir": "Disc",
+      "registry": "install.reg"
+    },
+    "manualFile": "Disc/MANUAL/manual_uk.pdf",
+    "note": "This game runs on our server and is streamed to your browser, so it needs a steady connection. Save inside the game as usual: your saved games are copied to the cloud every minute and when you exit."
   },
   {
     "id": "cm4",

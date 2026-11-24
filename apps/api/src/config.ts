@@ -31,4 +31,13 @@ export const config = {
   maxSlots: Number(env("MAX_SLOTS", "5")),
   /** Max size of one uploaded save archive. */
   maxSaveBytes: Number(env("MAX_SAVE_BYTES", String(200 * 1024 * 1024))),
+  /** Windows-game seat containers (host names on the app's network), e.g. "seat1,seat2". Empty = none. */
+  seats: env("SEATS", "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
+  /** Shared secret for the app → seat agent API. */
+  seatToken: env("SEAT_TOKEN", ""),
+  /** A seat is freed after this many minutes with no mouse or keyboard input. */
+  seatIdleMinutes: Number(env("SEAT_IDLE_MINUTES", "30")),
 };

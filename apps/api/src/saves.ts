@@ -19,7 +19,7 @@ type SaveRow = {
 
 type Params = { gameId: string; slot: string };
 
-function savePath(userId: number, gameId: string, slot: number) {
+export function savePath(userId: number, gameId: string, slot: number) {
   return path.join(config.dataDir, "saves", String(userId), gameId, `${slot}.zip`);
 }
 
@@ -39,6 +39,37 @@ function parse(params: Params, reply: FastifyReply): { gameId: string; slot: num
 
 function toApi(r: SaveRow) {
   return { slot: r.slot, label: r.label, size: r.size, createdAt: r.created_at, updatedAt: r.updated_at };
+}
+
+/** Read a slot's save archive, or null if the slot is empty. */
+export function readSave(userId: number, gameId: string, slot: number): Buffer | null {
+  const file = savePath(userId, gameId, slot);
+  if (!getRowStmt().get(userId, gameId, slot) || !fs.existsSync(file)) return null;
+  return fs.readFileSync(file);
+}
+
+/** Write a slot's save archive atomically and record it. `label` null keeps the existing label. */
+export function storeSave(userId: number, gameId: string, slot: number, body: Buffer, label: string | null) {
+  const file = savePath(userId, gameId, slot);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const tmp = `${file}.tmp-${process.pid}-${Date.now()}`;
+  fs.writeFileSync(tmp, body);
+  fs.renameSync(tmp, file);
+  const now = Date.now();
+  db.prepare(
+    `INSERT INTO saves (user_id, game_id, slot, label, size, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT (user_id, game_id, slot) DO UPDATE SET
+       size = excluded.size,
+       updated_at = excluded.updated_at,
+       label = CASE WHEN ? IS NULL THEN saves.label ELSE excluded.label END`,
+  ).run(userId, gameId, slot, label ?? "", body.length, now, now, label);
+}
+
+let getRowCached: ReturnType<typeof db.prepare> | null = null;
+function getRowStmt() {
+  getRowCached ??= db.prepare(`SELECT * FROM saves WHERE user_id = ? AND game_id = ? AND slot = ?`);
+  return getRowCached;
 }
 
 export async function saveRoutes(app: FastifyInstance) {
@@ -78,22 +109,8 @@ export async function saveRoutes(app: FastifyInstance) {
       if (!Buffer.isBuffer(body) || body.length < 4 || body[0] !== 0x50 || body[1] !== 0x4b)
         return reply.code(400).send({ error: "Save data must be a zip archive" });
 
-      const file = savePath(req.user!.id, p.gameId, p.slot);
-      fs.mkdirSync(path.dirname(file), { recursive: true });
-      const tmp = `${file}.tmp-${process.pid}-${Date.now()}`;
-      fs.writeFileSync(tmp, body);
-      fs.renameSync(tmp, file);
-
-      const now = Date.now();
       const label = typeof req.query.label === "string" ? req.query.label.slice(0, 60) : null;
-      db.prepare(
-        `INSERT INTO saves (user_id, game_id, slot, label, size, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)
-         ON CONFLICT (user_id, game_id, slot) DO UPDATE SET
-           size = excluded.size,
-           updated_at = excluded.updated_at,
-           label = CASE WHEN ? IS NULL THEN saves.label ELSE excluded.label END`,
-      ).run(req.user!.id, p.gameId, p.slot, label ?? "", body.length, now, now, label);
+      storeSave(req.user!.id, p.gameId, p.slot, body, label);
       return { save: toApi(getRow.get(req.user!.id, p.gameId, p.slot) as SaveRow) };
     },
   );

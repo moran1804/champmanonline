@@ -12,6 +12,17 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # The website + API.
+          - image: champmanonline
+            context: .
+            file: docker/Dockerfile
+          # A Windows-game seat (Wine + virtual screen), see docker/seat.
+          - image: champmanonline-seat
+            context: docker/seat
+            file: docker/seat/Dockerfile
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
@@ -21,15 +32,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Lower-case image name
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/champmanonline" >> "$GITHUB_ENV"
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ matrix.image }}" >> "$GITHUB_ENV"
       - uses: docker/build-push-action@v6
         with:
-          context: .
-          file: docker/Dockerfile
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
           platforms: linux/amd64
           push: true
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
