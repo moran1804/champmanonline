@@ -12,7 +12,7 @@
       "readme.txt"
     ],
     "dosbox": {
-      "cycles": "max 80%",
+      "cycles": "max 50%",
       "autoexec": [
         "mount c .",
         "c:",
@@ -37,7 +37,7 @@
       "file_id.diz"
     ],
     "dosbox": {
-      "cycles": "max 80%",
+      "cycles": "max 50%",
       "autoexec": [
         "mount c .",
         "c:",
@@ -58,7 +58,7 @@
       "readme.txt"
     ],
     "dosbox": {
-      "cycles": "max 80%",
+      "cycles": "max 50%",
       "autoexec": [
         "mount c .",
         "c:",
@@ -84,7 +84,7 @@
     ],
     "note": "Version 1.56 with the original CD. The first time you play, the game is a large download (about 245 MB). After that your browser keeps a copy.",
     "dosbox": {
-      "cycles": "max",
+      "cycles": "max 50%",
       "memsize": 16,
       "autoexec": [
         "mount c .",
@@ -112,7 +112,7 @@
       "dom.dom"
     ],
     "dosbox": {
-      "cycles": "max",
+      "cycles": "max 50%",
       "memsize": 32,
       "autoexec": [
         "mount c .",
@@ -141,7 +141,7 @@
       "readme.txt"
     ],
     "dosbox": {
-      "cycles": "max",
+      "cycles": "max 50%",
       "memsize": 32,
       "autoexec": [
         "mount c .",
@@ -179,7 +179,7 @@
       "SCOUT8.EXE"
     ],
     "dosbox": {
-      "cycles": "max",
+      "cycles": "max 50%",
       "memsize": 32,
       "autoexec": [
         "set DOS4G=quiet",

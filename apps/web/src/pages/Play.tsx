@@ -45,6 +45,16 @@ function useVisualViewportSize() {
   }, []);
 }
 
+type Speed = "smooth" | "turbo";
+const SPEED_KEY = "cmo-speed";
+function loadSpeed(): Speed {
+  try {
+    return localStorage.getItem(SPEED_KEY) === "turbo" ? "turbo" : "smooth";
+  } catch {
+    return "smooth";
+  }
+}
+
 export function PlayPage() {
   const { gameId = "", slot: slotParam = "1" } = useParams();
   const slot = Number(slotParam);
@@ -60,6 +70,7 @@ export function PlayPage() {
   const [showResults, setShowResults] = useState(false);
   const [kbOpen, setKbOpen] = useState(false);
   const [portraitDismissed, setPortraitDismissed] = useState(false);
+  const [speed, setSpeed] = useState<Speed>(loadSpeed);
   const autoShownRef = useRef(false);
 
   const touch = useMediaQuery("(any-pointer: coarse)");
@@ -142,6 +153,28 @@ export function PlayPage() {
     navigate(`/games/${gameId}`);
   }
 
+  // The emulator can't change speed while running, so switching saves and restarts the game.
+  async function changeSpeed() {
+    const next: Speed = speed === "smooth" ? "turbo" : "smooth";
+    const msg =
+      (next === "turbo"
+        ? "Turbo runs the game as fast as your device allows, but clicks and screen updates can feel less responsive."
+        : "Smooth runs slightly slower but feels more responsive.") +
+      "\n\nThe game will restart. Save inside the game first; you can then load your save again.";
+    if (!window.confirm(msg)) return;
+    setExiting(true);
+    const ok = (await player()?.shutdown().catch(() => false)) ?? true;
+    setExiting(false);
+    if (!ok && !window.confirm("Your latest progress could not be saved to the cloud. Restart anyway?")) return;
+    try {
+      localStorage.setItem(SPEED_KEY, next);
+    } catch {
+      // Not stored; the choice still applies until the page is closed.
+    }
+    setStatus({ kind: "loading", message: "Restarting…" });
+    setSpeed(next);
+  }
+
   function toggleKeyboard() {
     if (kbOpen) kbRef.current?.close();
     else kbRef.current?.open();
@@ -158,7 +191,7 @@ export function PlayPage() {
     );
   }
 
-  const src = game ? `/player.html?${new URLSearchParams({ game: game.id, slot: String(slot) })}` : null;
+  const src = game ? `/player.html?${new URLSearchParams({ game: game.id, slot: String(slot), speed })}` : null;
   const busy = status.kind === "loading" || status.kind === "saving" || exiting;
 
   const statusEl = (
@@ -215,6 +248,17 @@ export function PlayPage() {
       <span className="lbl">Manual</span>
     </button>
   );
+  const speedBtn = (
+    <button
+      className={`btn small ${speed === "turbo" ? "primary" : "ghost"}`}
+      onClick={() => void changeSpeed()}
+      disabled={busy}
+      title={speed === "turbo" ? "Speed: Turbo (tap for Smooth)" : "Speed: Smooth (tap for Turbo)"}
+    >
+      <span aria-hidden>{speed === "turbo" ? "⏩" : "▶"}</span>
+      <span className="lbl">{speed === "turbo" ? "Turbo" : "Smooth"}</span>
+    </button>
+  );
   const fullscreenBtn = canFullscreen && (
     <button
       className="btn ghost small"
@@ -244,6 +288,7 @@ export function PlayPage() {
           {saveBtn}
           {resultsBtn}
           {manualBtn}
+          {speedBtn}
           {fullscreenBtn}
         </div>
       )}
@@ -270,6 +315,7 @@ export function PlayPage() {
               {keyboardBtn}
               {resultsBtn}
               {manualBtn}
+              {speedBtn}
               {fullscreenBtn}
             </div>
           </>
@@ -277,6 +323,7 @@ export function PlayPage() {
         {status.kind === "loading" && rails && <div className="rail-loading">{statusText(status)}</div>}
         {src && (
           <iframe
+            key={speed}
             ref={iframeRef}
             className="player-frame"
             src={src}

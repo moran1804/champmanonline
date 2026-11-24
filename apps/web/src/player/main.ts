@@ -16,6 +16,9 @@ import { attachTouch, createInput, type TouchMouseMode } from "./input";
 const params = new URLSearchParams(location.search);
 const gameId = params.get("game") ?? "";
 const slot = Number(params.get("slot") ?? "1");
+// "smooth" uses the game's own setting (max 50%: nearly full speed, still responsive);
+// "turbo" gives the emulator all the CPU it can get.
+const turbo = params.get("speed") === "turbo";
 const autoSyncMs = Number(params.get("autosync") ?? "30000");
 
 let props: DosProps | null = null;
@@ -172,7 +175,7 @@ async function start() {
     report({ kind: "loading", message: "Starting the emulator…" });
     const Dos = await loadJsDos();
     props = Dos(document.getElementById("dos")!, {
-      dosboxConf: game.dosboxConf,
+      dosboxConf: turbo ? game.dosboxConf.replace(/^cycles=.*$/m, "cycles=max") : game.dosboxConf,
       initFs: existing ? [bundle, existing] : bundle,
       pathPrefix: `${JSDOS_BASE}emulators/`,
       autoStart: true,
