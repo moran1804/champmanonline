@@ -53,3 +53,17 @@ app.log.info(`Games root: ${config.gamesRoot}`);
 app.log.info(`Data dir: ${config.dataDir}`);
 
 await app.listen({ port: config.port, host: config.host });
+
+// On "docker stop" (e.g. an app update), close cleanly so running Windows-game sessions are saved
+// into their slots before the seats go away.
+for (const signal of ["SIGTERM", "SIGINT"] as const) {
+  process.once(signal, () => {
+    app.log.info(`${signal}: saving sessions and shutting down`);
+    const force = setTimeout(() => process.exit(1), 50_000);
+    force.unref();
+    app.close().then(
+      () => process.exit(0),
+      () => process.exit(1),
+    );
+  });
+}

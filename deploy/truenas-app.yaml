@@ -35,6 +35,8 @@ services:
       - /mnt/CHANGE_ME_POOL/apps/champmanonline/games:/games:ro
     ports:
       - "30080:8080"
+    # Time to save running Windows-game sessions when the app is stopped or updated.
+    stop_grace_period: 60s
     depends_on:
       - seat1
       - seat2
