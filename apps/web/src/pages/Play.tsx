@@ -45,6 +45,14 @@ function useVisualViewportSize() {
   }, []);
 }
 
+function loadMuted(): boolean {
+  try {
+    return localStorage.getItem("cmo-muted") === "1";
+  } catch {
+    return false;
+  }
+}
+
 type Speed = "smooth" | "turbo";
 const SPEED_KEY = "cmo-speed";
 function loadSpeed(): Speed {
@@ -71,6 +79,7 @@ export function PlayPage() {
   const [kbOpen, setKbOpen] = useState(false);
   const [portraitDismissed, setPortraitDismissed] = useState(false);
   const [speed, setSpeed] = useState<Speed>(loadSpeed);
+  const [muted, setMuted] = useState(loadMuted);
   const autoShownRef = useRef(false);
 
   const touch = useMediaQuery("(any-pointer: coarse)");
@@ -175,6 +184,18 @@ export function PlayPage() {
     setSpeed(next);
   }
 
+  function toggleMute() {
+    const next = !muted;
+    setMuted(next);
+    try {
+      localStorage.setItem("cmo-muted", next ? "1" : "0");
+    } catch {
+      // Not remembered; still applies now.
+    }
+    player()?.setMuted?.(next);
+    focusGame();
+  }
+
   function toggleKeyboard() {
     if (kbOpen) kbRef.current?.close();
     else kbRef.current?.open();
@@ -254,6 +275,18 @@ export function PlayPage() {
       <span className="lbl">Manual</span>
     </button>
   );
+  // Sound for Windows games is streamed from the seat; DOS games play sound in the browser.
+  const soundBtn = windows && (
+    <button
+      className={`btn small ${muted ? "primary" : "ghost"}`}
+      onClick={toggleMute}
+      title={muted ? "Sound off (tap to turn on)" : "Sound on (tap to mute)"}
+      aria-pressed={muted}
+    >
+      <span aria-hidden>{muted ? "🔇" : "🔊"}</span>
+      <span className="lbl">{muted ? "Muted" : "Sound"}</span>
+    </button>
+  );
   // Speed only applies to the DOS emulator.
   const speedBtn = !windows && (
     <button
@@ -296,6 +329,7 @@ export function PlayPage() {
           {resultsBtn}
           {manualBtn}
           {speedBtn}
+          {soundBtn}
           {fullscreenBtn}
         </div>
       )}
@@ -323,6 +357,7 @@ export function PlayPage() {
               {resultsBtn}
               {manualBtn}
               {speedBtn}
+              {soundBtn}
               {fullscreenBtn}
             </div>
           </>

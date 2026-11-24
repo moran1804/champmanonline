@@ -1,7 +1,7 @@
 // Windows games run in "seat" containers (Wine + a virtual screen, see docker/seat). This module
 // hands seats out to players, starts and stops their game through each seat's agent, copies save
 // files between the seat and the player's save slot, and relays the game's screen (a VNC stream over
-// WebSocket) to the browser of the player who owns the seat, and nobody else.
+// WebSocket) and sound to the browser of the player who owns the seat, and nobody else.
 import crypto from "node:crypto";
 import net from "node:net";
 import type { IncomingMessage } from "node:http";
@@ -13,7 +13,8 @@ import { getGame, isPlayable, type Game } from "./games.ts";
 import { readSave, storeSave } from "./saves.ts";
 
 const AGENT_PORT = 7000;
-const VNC_PORT = 6080;
+/** Seat WebSocket endpoints relayed for the seat's owner: the screen (VNC) and the sound stream. */
+const STREAMS: Record<string, number> = { "/api/seat/ws": 6080, "/api/seat/audio": 6081 };
 const SYNC_EVERY_MS = 60_000;
 /** A seat whose player has no open stream is freed after this long (closed tab, lost connection). */
 const DISCONNECTED_GRACE_MS = 5 * 60_000;
@@ -233,16 +234,18 @@ export async function seatRoutes(app: FastifyInstance) {
     await Promise.allSettled([...sessions.values()].map((s) => endSession(s, "server stopping")));
   });
 
-  // The game stream: WebSocket upgrade on /api/seat/ws, relayed byte-for-byte to the owner's seat.
+  // The game's screen and sound: WebSocket upgrades on /api/seat/ws and /api/seat/audio, relayed
+  // byte-for-byte to the owner's seat.
   app.server.on("upgrade", (req: IncomingMessage, socket: Duplex, head: Buffer) => {
-    if (!req.url?.startsWith("/api/seat/ws")) return; // not ours
+    const port = STREAMS[(req.url ?? "").split("?")[0]];
+    if (!port) return; // not ours
     const user = userFromCookieHeader(req.headers.cookie);
     const s = user && user.status === "approved" ? sessionOf(user.id) : undefined;
     if (!s) {
       socket.end("HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n");
       return;
     }
-    const upstream = net.connect(VNC_PORT, s.seat);
+    const upstream = net.connect(port, s.seat);
     upstream.on("connect", () => {
       // Replay the browser's upgrade request to websockify, then pipe both ways.
       const lines = [`GET / HTTP/1.1`];
@@ -251,7 +254,7 @@ export async function seatRoutes(app: FastifyInstance) {
         if (/^(cookie|host)$/i.test(k)) continue; // the seat doesn't need the player's session cookie
         lines.push(`${k}: ${req.rawHeaders[i + 1]}`);
       }
-      lines.push(`Host: ${s.seat}:${VNC_PORT}`);
+      lines.push(`Host: ${s.seat}:${port}`);
       upstream.write(lines.join("\r\n") + "\r\n\r\n");
       if (head?.length) upstream.write(head);
       s.streams.add(socket);

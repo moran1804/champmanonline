@@ -19,4 +19,6 @@ export type PlayerApi = {
   sync: () => Promise<boolean>;
   /** Final sync, then stop the emulator. */
   shutdown: () => Promise<boolean>;
+  /** Mute or unmute game sound (Windows games; DOS games don't offer it). */
+  setMuted?: (muted: boolean) => void;
 };

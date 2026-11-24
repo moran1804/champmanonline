@@ -8,12 +8,14 @@
 // minute, on "Save to cloud", and when the session ends.
 import RFB from "@novnc/novnc";
 import type { PlayerApi, SpecialKey, SyncStatus } from "../player/protocol";
+import { startSeatAudio, type SeatAudio } from "./audio";
 
 const params = new URLSearchParams(location.search);
 const gameId = params.get("game") ?? "";
 const slot = Number(params.get("slot") ?? "1");
 
 let rfb: RFB | null = null;
+let audio: SeatAudio | null = null;
 let stopped = false;
 let connectedOnce = false;
 let reconnects = 0;
@@ -63,6 +65,15 @@ async function start() {
     await post(`/api/seat/${encodeURIComponent(gameId)}/${slot}/start`);
     report({ kind: "loading", message: "Starting the game…" });
     connect();
+    let muted = false;
+    try {
+      muted = localStorage.getItem("cmo-muted") === "1";
+    } catch {
+      // Storage blocked: start with sound on.
+    }
+    const scheme = location.protocol === "https:" ? "wss" : "ws";
+    audio = startSeatAudio(`${scheme}://${location.host}/api/seat/audio`, muted);
+    (window as unknown as { __cmoAudio: SeatAudio }).__cmoAudio = audio;
   } catch (e) {
     report({ kind: "error", message: (e as Error).message });
   }
@@ -91,6 +102,7 @@ async function shutdown(): Promise<boolean> {
     return false;
   } finally {
     rfb?.disconnect();
+    audio?.stop();
   }
 }
 
@@ -120,6 +132,7 @@ function keysymFor(ch: string): number {
 const playerApi: PlayerApi = {
   sync,
   shutdown,
+  setMuted: (m) => audio?.setMuted(m),
   type(text) {
     for (const ch of text) rfb?.sendKey(keysymFor(ch), null);
     noteActivity();
@@ -153,6 +166,7 @@ setInterval(async () => {
     if (!s.active || s.running === false) {
       stopped = true;
       rfb?.disconnect();
+      audio?.stop();
       report({ kind: "error", message: "The game has closed. Your progress has been saved to the cloud." });
     }
   } catch {
